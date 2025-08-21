@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title }} — {{ event_id }}</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 24px; color: #111; }
+    .cover { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .palette { display: flex; gap: 8px; }
+    .swatch { width: 28px; height: 28px; border-radius: 4px; border: 1px solid #ddd; }
+    .meta { color: #555; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    figure { margin: 0; }
+    figure img { width: 100%; height: auto; border-radius: 8px; border: 1px solid #eee; }
+    figure figcaption { font-size: 12px; color: #444; margin-top: 4px; }
+    h1 { margin: 0 0 8px 0; font-weight: 700; }
+    h2 { margin-top: 24px; }
+    ul { padding-left: 18px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { background: #f3f3f3; color: #333; border: 1px solid #e6e6e6; padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div>
+      <h1>{{ title }}</h1>
+      <div class="meta">{{ date_range }}{% if location_text %} • {{ location_text }}{% endif %}</div>
+      <div class="palette" aria-label="palette">
+        {% for hex in palette_hex %}
+        <div class="swatch" title="{{ hex }}" style="background: {{ hex }}"></div>
+        {% endfor %}
+      </div>
+    </div>
+    <div>
+      <ul>
+        {% for hi in highlights %}
+        <li>{{ hi }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Story</h2>
+    <p style="white-space: pre-wrap; line-height: 1.6">{{ story }}</p>
+  </section>
+
+  <section>
+    <h2>Photos</h2>
+    <div class="grid">
+      {% for p in photos %}
+      <figure>
+        <img src="{{ p.uri }}" alt="{{ p.photo_id }}" loading="lazy" />
+        {% if p.caption %}<figcaption>{{ p.caption }}</figcaption>{% endif %}
+      </figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section>
+    <h2>Objects & Places</h2>
+    <div class="tags">
+      {% for t in uniq_objects %}<span class="tag">{{ t }}</span>{% endfor %}
+      {% for t in uniq_scene_tags %}<span class="tag">{{ t }}</span>{% endfor %}
+      {% for t in uniq_vibe_words %}<span class="tag">{{ t }}</span>{% endfor %}
+    </div>
+  </section>
+
+  {% if has_people %}
+  <section>
+    <h2>Mood Board (people detected)</h2>
+    <p>Portraits and emotions can be added in a follow-up step.</p>
+  </section>
+  {% endif %}
+</body>
+</html>
