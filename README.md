@@ -28,7 +28,7 @@
 3) Run on a folder of photos
 
    ```bash
-   python -m ananda.run \
+   python -m piary.run \
      --photo-dir "/path/to/photos" \
      --model llava:13b \
      --out-dir ./out
